@@ -1,0 +1,6 @@
+name: MP128SpecialPickaxe
+version: '1.0-SNAPSHOT'
+main: project128.minecraft.mP128SpecialPickaxe.MP128SpecialPickaxe
+api-version: '1.18'
+authors: [TheSpace]
+description: Плагин для режима Underground
