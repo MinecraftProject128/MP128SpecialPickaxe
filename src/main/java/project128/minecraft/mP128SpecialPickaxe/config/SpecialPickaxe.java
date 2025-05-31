@@ -3,6 +3,7 @@ package project128.minecraft.mP128SpecialPickaxe.config;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import project128.minecraft.mP128SpecialPickaxe.config.exceptions.NonExistentValue;
 
 import java.util.List;
 import java.util.Map;

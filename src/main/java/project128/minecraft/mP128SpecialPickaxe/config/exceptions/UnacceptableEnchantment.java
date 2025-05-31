@@ -1,4 +1,4 @@
-package project128.minecraft.mP128SpecialPickaxe.config;
+package project128.minecraft.mP128SpecialPickaxe.config.exceptions;
 
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
