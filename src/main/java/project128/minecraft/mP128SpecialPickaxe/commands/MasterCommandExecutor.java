@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import project128.minecraft.mP128SpecialPickaxe.config.Config;
+import project128.minecraft.mP128SpecialPickaxe.config.SpecialPickaxe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,12 @@ public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
         if (strings.length == 2) {
             if (strings[0].equals("give") && commandSender instanceof Player player) {
                 if (player.hasPermission("specialpickaxe.give")) {
-                    GiveSpecialPickaxe.getInstance(plugin).givePickaxe(player,
-                            Config.getInstance(plugin).getPickaxe(strings[1]));
+                    SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[1]);
+                    if (pickaxe == null) {
+                        player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_PICKAXE));
+                        return false;
+                    }
+                    GiveSpecialPickaxe.getInstance(plugin).givePickaxe(player, pickaxe);
                     player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.GIVE_SELF,
                             Map.of("{pickaxe-name}", strings[1])));
                     return true;

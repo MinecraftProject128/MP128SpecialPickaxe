@@ -68,6 +68,12 @@ public class Config {
     }
 
     public SpecialPickaxe getPickaxe(@NotNull String name) {
+        try {
+            getSection(new String[]{"pickaxes", name});
+        } catch (SectionDoesNotExist e) {
+            return null;
+        }
+
         String displayName = getField(new String[]{"pickaxes", name, "display-name"}, String.class);
         List<String> description = getField(new String[]{"pickaxes", name, "description"}, ArrayList.class);
         boolean freeUse = getField(new String[]{"pickaxes", name, "free-use"}, Boolean.class);
@@ -121,7 +127,8 @@ public class Config {
         NOT_ALLOWED_COMMAND(new String[]{"messages", "not-allowed-command"}, String.class),
         NOT_ALLOWED_USE(new String[]{"messages", "not-allowed-use"}, String.class),
         GIVE_SELF(new String[]{"messages", "give-self"}, String.class),
-        UNKNOWN_COMMAND(new String[]{"messages", "unknown-command"}, String.class);
+        UNKNOWN_COMMAND(new String[]{"messages", "unknown-command"}, String.class),
+        UNKNOWN_PICKAXE(new String[]{"messages", "unknown-pickaxe"}, String.class);
 
         public final String[] path;
         public final Class<?> type;
