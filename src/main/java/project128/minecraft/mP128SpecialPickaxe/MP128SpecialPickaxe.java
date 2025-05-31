@@ -9,12 +9,9 @@ public final class MP128SpecialPickaxe extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
 
-        getLogger().info("Версия файла конфигурации: " + Config.getInstance(this).getField(Config.Field.VERSION));
+        getLogger().info("Версия файла конфигурации: " +
+                Config.getInstance(this).getField(Config.Field.VERSION));
 
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
 }

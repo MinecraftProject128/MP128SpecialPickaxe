@@ -27,6 +27,8 @@ public class Config {
     public <T> T getField(@NotNull String @NotNull [] path, Class<T> type) {
         String fieldName = path[path.length - 1];
         ConfigurationSection section = getSection(Arrays.copyOfRange(path, 0, path.length - 1));
+        if (section.get(fieldName) == null)
+            throw new FieldDoesNotExist(fieldName, plugin);
         if (section.get(fieldName).getClass() != type)
             throw new InvalidFieldType(fieldName, type,
                     section.get(fieldName).getClass(), plugin);
