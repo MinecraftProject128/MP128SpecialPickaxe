@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import project128.minecraft.mP128SpecialPickaxe.config.Config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
@@ -33,9 +34,23 @@ public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1)
-            return List.of("give");
+            return getFirstLevelCommands(commandSender);
         if (strings.length == 2 && strings[0].equals("give"))
-            return Config.getInstance(plugin).getSection(new String[]{"pickaxes"}).getKeys(false).stream().toList();
+            return getSecondLevelCommands(commandSender, strings);
         return List.of();
+    }
+
+    private List<String> getFirstLevelCommands(CommandSender commandSender) {
+        List<String> tips = new ArrayList<>();
+        if (commandSender.hasPermission("specialpickaxe.give"))
+            tips.add("give");
+        return tips;
+    }
+
+    private List<String> getSecondLevelCommands(CommandSender commandSender, String[] strings) {
+        List<String> tips = new ArrayList<>();
+        if (strings[0].equals("give") && commandSender.hasPermission("specialpickaxe.give"))
+            tips.addAll(Config.getInstance(plugin).getSection(new String[]{"pickaxes"}).getKeys(false));
+        return tips;
     }
 }
