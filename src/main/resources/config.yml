@@ -11,12 +11,12 @@ pickaxes:
       - '&fА это её описание'
     free-use: true  # Будут ли нужны права для использования. Если значение ложно, то право на использование `specialpickaxe.use.example`.
     shape:
-      type: circle  # Варианты: 'circle' и 'rectangle'.
+      type: CIRCLE  # Варианты: 'CIRCLE' и 'RECTANGLE'.
       size:
         radius: 5  # Учитывает только при фигуре sphere.
         width: 3  # Учитывает только при фигуре rectangle.
         height: 4  # Учитывает только при фигуре rectangle.
         length: 5  # Учитывает только при фигуре rectangle.
-    material: iron  # Материал кирки: wood, stone, iron, gold, diamond или netherite.
+    material: IRON  # Материал кирки: WOOD, STONE, IRON, GOLD, DIAMOND или NETHERITE.
     enchantments: # Словарь зачарований и их уровней (https://idpredmetov.ru/id-zacharovanij/).
       efficiency: 4  # Пример. Будет наложено зачарование эффективность IV.
