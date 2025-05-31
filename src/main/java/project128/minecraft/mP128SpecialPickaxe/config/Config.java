@@ -1,5 +1,6 @@
 package project128.minecraft.mP128SpecialPickaxe.config;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -62,8 +63,11 @@ public class Config {
             int level = getField(new String[]{"pickaxes", name, "enchantments", enchantmentName}, Integer.class);
 
             if (enchantment == null)
-                throw new UnacceptableEnchantment("Зачаровния с именем \"" +
+                throw new UnacceptableEnchantment("Зачарование с именем \"" +
                         enchantmentName + "\" не существует!", plugin);
+            if (!enchantment.canEnchantItem(new ItemStack(Material.WOODEN_PICKAXE)))
+                throw new UnacceptableEnchantment("Зачарование с именем \"" +
+                        enchantmentName + "\" нельзя наложить на кирку!", plugin);
 
             enchantments.put(enchantment, Math.max(Math.min(level, enchantment.getMaxLevel()), 0));
         }
