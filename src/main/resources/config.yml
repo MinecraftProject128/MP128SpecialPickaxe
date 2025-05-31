@@ -1,0 +1,22 @@
+version: 1
+messages:
+  not-allowed-command: '&cУ вас недостаточно прав для выполнения этой команды'  # Нет права на использование команды
+  not-allowed-use: '&cВы не можете использовать эту кирку'  # Нет права использовать кирку
+  give-self: '&fВы получили кирку {pickaxe-name}'  # Получение кирки. Плейхолдер {pickaxe-name} будет заменено на название кирки.
+pickaxes:
+  example:
+    display-name: '&e&lПример кирки'  # Название, которе будет отображаться на кирке.
+    description: # Список строк с описанием кирки.
+      - '&fЭто пример кирки'
+      - '&fА это её описание'
+    free-use: true  # Будут ли нужны права для использования. Если значение ложно, то право на использование `specialpickaxe.use.example`.
+    shape:
+      type: circle  # Варианты: 'circle' и 'rectangle'.
+      size:
+        radius: 5  # Учитывает только при фигуре sphere.
+        width: 3  # Учитывает только при фигуре rectangle.
+        height: 4  # Учитывает только при фигуре rectangle.
+        length: 5  # Учитывает только при фигуре rectangle.
+    material: iron  # Материал кирки: wood, stone, iron, gold, diamond или netherite.
+    enchantments: # Словарь зачарований и их уровней (https://idpredmetov.ru/id-zacharovanij/).
+      efficiency: 4  # Пример. Будет наложено зачарование эффективность IV.
