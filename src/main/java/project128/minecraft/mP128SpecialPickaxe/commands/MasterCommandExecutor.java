@@ -12,6 +12,7 @@ import project128.minecraft.mP128SpecialPickaxe.config.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
     private final Plugin plugin;
@@ -24,8 +25,16 @@ public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 2) {
             if (strings[0].equals("give") && commandSender instanceof Player player) {
-                GiveSpecialPickaxe.getInstance(plugin).givePickaxe(player,
-                        Config.getInstance(plugin).getPickaxe(strings[1]));
+                if (player.hasPermission("specialpickaxe.give")) {
+                    GiveSpecialPickaxe.getInstance(plugin).givePickaxe(player,
+                            Config.getInstance(plugin).getPickaxe(strings[1]));
+                    player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.GIVE_SELF,
+                            Map.of("{pickaxe-name}", strings[1])));
+                    return true;
+                } else {
+                    player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
+                    return false;
+                }
             }
         }
         commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_COMMAND));

@@ -29,13 +29,26 @@ public class Config {
         return instance;
     }
 
-    public Component getMessage(@NotNull String @NotNull [] path) {
+    public Component getMessage(@NotNull String @NotNull [] path, Map<String, String> replace) {
+        String legacy = getField(path, String.class).replace("&", "§");
+        for (String oldChar : replace.keySet()) {
+            String newChar = replace.get(oldChar);
+            legacy = legacy.replace(oldChar, newChar);
+        }
         return LegacyComponentSerializer.legacySection()
-                .deserialize(getField(path, String.class).replace("&", "§"));
+                .deserialize(legacy);
+    }
+
+    public Component getMessage(@NotNull String @NotNull [] path) {
+        return getMessage(path, new HashMap<>());
+    }
+
+    public Component getMessage(Field field, Map<String, String> replace) {
+        return getMessage(field.path, replace);
     }
 
     public Component getMessage(Field field) {
-        return getMessage(field.path);
+        return getMessage(field, new HashMap<>());
     }
 
     public <T> T getField(@NotNull String @NotNull [] path, Class<T> type) {
