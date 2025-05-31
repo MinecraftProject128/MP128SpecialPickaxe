@@ -3,6 +3,7 @@ package project128.minecraft.mP128SpecialPickaxe.commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -32,6 +33,9 @@ public class GiveSpecialPickaxe {
                 data.getMaterial()
         ), 1);
         pickaxe.setItemMeta(setupPickaxeMeta(pickaxe.getItemMeta(), data));
+
+        for (Enchantment enchantment : data.getEnchantments().keySet())
+            pickaxe.addEnchantment(enchantment, data.getEnchantments().get(enchantment));
 
         player.getInventory().addItem(pickaxe);
     }
