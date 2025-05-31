@@ -1,12 +1,15 @@
 package project128.minecraft.mP128SpecialPickaxe;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import project128.minecraft.mP128SpecialPickaxe.config.Config;
 
 public final class MP128SpecialPickaxe extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        saveDefaultConfig();
+
+        getLogger().info("Версия файла конфигурации: " + Config.getInstance(this).get(Config.Field.VERSION));
 
     }
 
