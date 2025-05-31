@@ -26,17 +26,12 @@ public class Config {
 
     public <T> T getField(@NotNull String @NotNull [] path, Class<T> type) {
         String fieldName = path[path.length - 1];
-        try {
-            ConfigurationSection section = getSection(Arrays.copyOfRange(path, 0, path.length - 1));
-            if (section.get(fieldName).getClass() != type)
-                throw new InvalidFieldType(fieldName, type,
-                        section.get(fieldName).getClass());
+        ConfigurationSection section = getSection(Arrays.copyOfRange(path, 0, path.length - 1));
+        if (section.get(fieldName).getClass() != type)
+            throw new InvalidFieldType(fieldName, type,
+                    section.get(fieldName).getClass(), plugin);
 
-            return section.getObject(fieldName, type);
-        } catch (FieldDoesNotExist | InvalidFieldType | SectionDoesNotExist | ThisIsNotASection e) {
-            plugin.getLogger().severe(e.getMessage());
-            throw e;
-        }
+        return section.getObject(fieldName, type);
     }
 
     public Object getField(@NotNull Field target) {
@@ -72,9 +67,9 @@ public class Config {
         for (String s : path) {
             assert section != null;
             if (!section.isSet(s))
-                throw new SectionDoesNotExist(s);
+                throw new SectionDoesNotExist(s, plugin);
             if (!section.isConfigurationSection(s))
-                throw new ThisIsNotASection(s);
+                throw new ThisIsNotASection(s, plugin);
             section = section.getConfigurationSection(s);
         }
         assert section != null;
