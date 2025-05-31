@@ -58,7 +58,7 @@ public class Config {
         ConfigurationSection enchantmentsSection = getSection(new String[]{"pickaxes", name, "enchantments"});
         for (String enchantmentName : enchantmentsSection.getKeys(false)) {
             Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName));
-            int level = enchantmentsSection.getInt(enchantmentName);
+            int level = getField(new String[]{"pickaxes", name, "enchantments", enchantmentName}, Integer.class);
             assert enchantment != null;
             enchantments.put(enchantment, Math.max(Math.min(level, enchantment.getMaxLevel()), 0));
         }
