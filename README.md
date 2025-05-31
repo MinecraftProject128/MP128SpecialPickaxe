@@ -44,5 +44,3 @@ pickaxes:
 | sp reload                            | specialpickaxe.reload          | Перезагрузка плагина                                                                     |
 | sp preview                           | specialpickaxe.preview         | Предварительный просмотр всех кирок и их быстрое получение _(предназначено для админов)_ |
 |                                      | specialpickaxe.use.name        | Право на использование кирки игроком                                                     |
-
-
