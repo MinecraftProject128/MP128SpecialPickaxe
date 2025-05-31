@@ -1,4 +1,4 @@
-package project128.minecraft.mP128SpecialPickaxe.config;
+package project128.minecraft.mP128SpecialPickaxe.config.exceptions;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.plugin.Plugin;

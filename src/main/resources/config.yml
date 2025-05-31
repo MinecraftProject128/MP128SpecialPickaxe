@@ -1,5 +1,8 @@
 version: 1
 messages:
+  unknown-command: '&cВ плагине такой команды нет'
+  unknown-pickaxe: '&cКирки с таким названием не существует'
+  use-give-command: '&fНапишите &o/sp give &npickaxe-name&r чтобы получить кирку &o(только для игрока). &fИспользуйте &o/sp give &npickaxe-name&r &o&nplayer&r чтобы выдать кирку.'
   not-allowed-command: '&cУ вас недостаточно прав для выполнения этой команды'  # Нет права на использование команды
   not-allowed-use: '&cВы не можете использовать эту кирку'  # Нет права использовать кирку
   give-self: '&fВы получили кирку {pickaxe-name}'  # Получение кирки. Плейхолдер {pickaxe-name} будет заменено на название кирки.

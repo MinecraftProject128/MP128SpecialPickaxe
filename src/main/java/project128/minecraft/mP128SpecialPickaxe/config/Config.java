@@ -1,5 +1,7 @@
 package project128.minecraft.mP128SpecialPickaxe.config;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -7,6 +9,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import project128.minecraft.mP128SpecialPickaxe.config.exceptions.*;
 
 import java.util.*;
 
@@ -26,6 +29,28 @@ public class Config {
         return instance;
     }
 
+    public Component getMessage(@NotNull String @NotNull [] path, Map<String, String> replace) {
+        String legacy = getField(path, String.class).replace("&", "§");
+        for (String oldChar : replace.keySet()) {
+            String newChar = replace.get(oldChar);
+            legacy = legacy.replace(oldChar, newChar);
+        }
+        return LegacyComponentSerializer.legacySection()
+                .deserialize(legacy);
+    }
+
+    public Component getMessage(@NotNull String @NotNull [] path) {
+        return getMessage(path, new HashMap<>());
+    }
+
+    public Component getMessage(Field field, Map<String, String> replace) {
+        return getMessage(field.path, replace);
+    }
+
+    public Component getMessage(Field field) {
+        return getMessage(field, new HashMap<>());
+    }
+
     public <T> T getField(@NotNull String @NotNull [] path, Class<T> type) {
         String fieldName = path[path.length - 1];
         ConfigurationSection section = getSection(Arrays.copyOfRange(path, 0, path.length - 1));
@@ -43,6 +68,12 @@ public class Config {
     }
 
     public SpecialPickaxe getPickaxe(@NotNull String name) {
+        try {
+            getSection(new String[]{"pickaxes", name});
+        } catch (SectionDoesNotExist e) {
+            return null;
+        }
+
         String displayName = getField(new String[]{"pickaxes", name, "display-name"}, String.class);
         List<String> description = getField(new String[]{"pickaxes", name, "description"}, ArrayList.class);
         boolean freeUse = getField(new String[]{"pickaxes", name, "free-use"}, Boolean.class);
@@ -77,7 +108,7 @@ public class Config {
         return new SpecialPickaxe(name, displayName, description, freeUse, shape, material, enchantments);
     }
 
-    private @NotNull ConfigurationSection getSection(@NotNull String[] path) {
+    public @NotNull ConfigurationSection getSection(@NotNull String[] path) {
         ConfigurationSection section = plugin.getConfig();
         for (String s : path) {
             assert section != null;
@@ -95,7 +126,10 @@ public class Config {
         VERSION(new String[]{"version"}, Integer.class),
         NOT_ALLOWED_COMMAND(new String[]{"messages", "not-allowed-command"}, String.class),
         NOT_ALLOWED_USE(new String[]{"messages", "not-allowed-use"}, String.class),
-        GIVE_SELF(new String[]{"messages", "give-self"}, String.class);
+        GIVE_SELF(new String[]{"messages", "give-self"}, String.class),
+        UNKNOWN_COMMAND(new String[]{"messages", "unknown-command"}, String.class),
+        UNKNOWN_PICKAXE(new String[]{"messages", "unknown-pickaxe"}, String.class),
+        USE_GIVE_COMMAND(new String[]{"messages", "use-give-command"}, String.class);
 
         public final String[] path;
         public final Class<?> type;
