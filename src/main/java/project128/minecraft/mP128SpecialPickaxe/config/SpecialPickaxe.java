@@ -81,7 +81,15 @@ public class SpecialPickaxe {
 
     public enum ShapeType {
         CIRCLE,
-        RECTANGLE,
+        RECTANGLE;
+
+        public static ShapeType get(String name) {
+            try {
+                return valueOf(name);
+            } catch (IllegalArgumentException e) {
+                throw new NonExistentValue(name, ShapeType.class);
+            }
+        }
     }
 
     public enum PickaxeMaterial {
