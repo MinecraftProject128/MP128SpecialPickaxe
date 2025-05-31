@@ -1,6 +1,7 @@
 package project128.minecraft.mP128SpecialPickaxe.config;
 
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -83,11 +84,11 @@ public class SpecialPickaxe {
         CIRCLE,
         RECTANGLE;
 
-        public static ShapeType get(String name) {
+        public static ShapeType get(String name, Plugin plugin) {
             try {
                 return valueOf(name);
             } catch (IllegalArgumentException e) {
-                throw new NonExistentValue(name, ShapeType.class);
+                throw new NonExistentValue(name, ShapeType.class, plugin);
             }
         }
     }
@@ -98,7 +99,15 @@ public class SpecialPickaxe {
         IRON,
         GOLD,
         DIAMOND,
-        NETHERITE
+        NETHERITE;
+
+        public static PickaxeMaterial get(String name, Plugin plugin) {
+            try {
+                return valueOf(name);
+            } catch (IllegalArgumentException e) {
+                throw new NonExistentValue(name, PickaxeMaterial.class, plugin);
+            }
+        }
     }
 
     public record Shape(ShapeType type, int radius, int width, int height, int length) {

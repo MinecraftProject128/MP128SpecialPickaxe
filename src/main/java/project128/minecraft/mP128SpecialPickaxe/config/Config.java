@@ -45,14 +45,15 @@ public class Config {
         List<String> description = getField(new String[]{"pickaxes", name, "description"}, ArrayList.class);
         boolean freeUse = getField(new String[]{"pickaxes", name, "free-use"}, Boolean.class);
         SpecialPickaxe.Shape shape = new SpecialPickaxe.Shape(
-                SpecialPickaxe.ShapeType.get(getField(new String[]{"pickaxes", name, "shape", "type"}, String.class)),
+                SpecialPickaxe.ShapeType.get(
+                        getField(new String[]{"pickaxes", name, "shape", "type"}, String.class), plugin),
                 getField(new String[]{"pickaxes", name, "shape", "size", "radius"}, Integer.class),
                 getField(new String[]{"pickaxes", name, "shape", "size", "width"}, Integer.class),
                 getField(new String[]{"pickaxes", name, "shape", "size", "height"}, Integer.class),
                 getField(new String[]{"pickaxes", name, "shape", "size", "length"}, Integer.class)
         );
-        SpecialPickaxe.PickaxeMaterial material = SpecialPickaxe.PickaxeMaterial.valueOf(
-                getField(new String[]{"pickaxes", name, "material"}, String.class));
+        SpecialPickaxe.PickaxeMaterial material = SpecialPickaxe.PickaxeMaterial.get(
+                getField(new String[]{"pickaxes", name, "material"}, String.class), plugin);
         Map<Enchantment, Integer> enchantments = new HashMap<>();
         ConfigurationSection enchantmentsSection = getSection(new String[]{"pickaxes", name, "enchantments"});
         for (String enchantmentName : enchantmentsSection.getKeys(false)) {
