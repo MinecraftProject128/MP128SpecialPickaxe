@@ -129,7 +129,8 @@ public class Config {
         GIVE_SELF(new String[]{"messages", "give-self"}, String.class),
         UNKNOWN_COMMAND(new String[]{"messages", "unknown-command"}, String.class),
         UNKNOWN_PICKAXE(new String[]{"messages", "unknown-pickaxe"}, String.class),
-        USE_GIVE_COMMAND(new String[]{"messages", "use-give-command"}, String.class);
+        USE_GIVE_COMMAND(new String[]{"messages", "use-give-command"}, String.class),
+        RELOAD(new String[]{"messages", "reload"}, String.class);
 
         public final String[] path;
         public final Class<?> type;

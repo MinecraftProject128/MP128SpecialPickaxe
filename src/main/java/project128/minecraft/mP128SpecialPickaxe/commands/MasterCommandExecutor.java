@@ -27,28 +27,37 @@ public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
                     SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[1]);
                     if (pickaxe == null) {
                         player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_PICKAXE));
-                        return false;
+                        return true;
                     }
                     GiveSpecialPickaxe.getInstance(plugin).givePickaxe(player, pickaxe);
                     player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.GIVE_SELF,
                             Map.of("{pickaxe-name}", strings[1])));
-                    return true;
-                } else {
+                } else
                     player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
-                    return false;
-                }
+                return true;
             } else if (strings[0].equals("give") && commandSender instanceof ConsoleCommandSender) {
                 commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
-                return false;
+                return true;
             }
         } else if (strings.length == 1) {
-            if (strings[0].equals("give") && commandSender.hasPermission("specialpickaxe.give")) {
-                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
+            if (strings[0].equals("give")) {
+                if (commandSender.hasPermission("specialpickaxe.give"))
+                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
+                else
+                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
+                return true;
+            }
+            if (strings[0].equals("reload")) {
+                if (commandSender.hasPermission("specialpickaxe.reload")) {
+                    plugin.reloadConfig();
+                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.RELOAD));
+                } else
+                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
                 return true;
             }
         }
         commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_COMMAND));
-        return false;
+        return true;
     }
 
     @Override
@@ -64,6 +73,8 @@ public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
         List<String> tips = new ArrayList<>();
         if (commandSender.hasPermission("specialpickaxe.give"))
             tips.add("give");
+        if (commandSender.hasPermission("specialpickaxe.reload"))
+            tips.add("reload");
         return tips;
     }
 
