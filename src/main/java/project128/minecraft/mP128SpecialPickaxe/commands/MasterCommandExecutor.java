@@ -28,26 +28,27 @@ public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
                         Config.getInstance(plugin).getPickaxe(strings[1]));
             }
         }
+        commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_COMMAND));
         return false;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1)
-            return getFirstLevelCommands(commandSender);
+            return getFirstLevelCommandsTips(commandSender);
         if (strings.length == 2 && strings[0].equals("give"))
-            return getSecondLevelCommands(commandSender, strings);
+            return getSecondLevelCommandsTips(commandSender, strings);
         return List.of();
     }
 
-    private List<String> getFirstLevelCommands(CommandSender commandSender) {
+    private List<String> getFirstLevelCommandsTips(CommandSender commandSender) {
         List<String> tips = new ArrayList<>();
         if (commandSender.hasPermission("specialpickaxe.give"))
             tips.add("give");
         return tips;
     }
 
-    private List<String> getSecondLevelCommands(CommandSender commandSender, String[] strings) {
+    private List<String> getSecondLevelCommandsTips(CommandSender commandSender, String[] strings) {
         List<String> tips = new ArrayList<>();
         if (strings[0].equals("give") && commandSender.hasPermission("specialpickaxe.give"))
             tips.addAll(Config.getInstance(plugin).getSection(new String[]{"pickaxes"}).getKeys(false));
