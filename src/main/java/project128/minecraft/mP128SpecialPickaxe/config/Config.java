@@ -68,8 +68,11 @@ public class Config {
             if (!enchantment.canEnchantItem(new ItemStack(Material.WOODEN_PICKAXE)))
                 throw new UnacceptableEnchantment("Зачарование с именем \"" +
                         enchantmentName + "\" нельзя наложить на кирку!", plugin);
-
-            enchantments.put(enchantment, Math.max(Math.min(level, enchantment.getMaxLevel()), 0));
+            int fixLevel = Math.max(Math.min(level, enchantment.getMaxLevel()), 1);
+            if (level != fixLevel)
+                plugin.getLogger().warning("Неверный уровень кирки \"" + level +
+                        "\" был изменён на \"" + fixLevel + "\".");
+            enchantments.put(enchantment, fixLevel);
         }
         return new SpecialPickaxe(name, displayName, description, freeUse, shape, material, enchantments);
     }
