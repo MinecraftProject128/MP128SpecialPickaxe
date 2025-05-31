@@ -1,5 +1,6 @@
 package project128.minecraft.mP128SpecialPickaxe.config;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -95,7 +96,7 @@ public class SpecialPickaxe {
     }
 
     public enum PickaxeMaterial {
-        WOODEN,
+        WOOD,
         STONE,
         IRON,
         GOLD,
@@ -108,6 +109,18 @@ public class SpecialPickaxe {
             } catch (IllegalArgumentException e) {
                 throw new NonExistentValue(name, PickaxeMaterial.class, plugin);
             }
+        }
+
+        public static Material toPickaxe(PickaxeMaterial material) {
+            Map<PickaxeMaterial, Material> pickaxes = Map.of(
+                    WOOD, Material.WOODEN_PICKAXE,
+                    STONE, Material.STONE_PICKAXE,
+                    IRON, Material.IRON_PICKAXE,
+                    GOLD, Material.GOLDEN_PICKAXE,
+                    DIAMOND, Material.DIAMOND_PICKAXE,
+                    NETHERITE, Material.NETHERITE_PICKAXE
+            );
+            return pickaxes.get(material);
         }
     }
 
