@@ -28,7 +28,6 @@ pickaxes:
         width: 3  # Учитывает только при фигуре rectangle.
         height: 4  # Учитывает только при фигуре rectangle.
         length: 5  # Учитывает только при фигуре rectangle.
-    roughness: true  # Логическое значение. Добавить искажения в идеальную фигуру.
     material: iron  # Материал кирки: wood, stone, iron, gold, diamond или netherite.
     enchantments: # Словарь зачарований и их уровней (https://idpredmetov.ru/id-zacharovanij/).
       efficiency: 4  # Пример. Будет наложено зачарование эффективность IV.
