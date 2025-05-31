@@ -128,7 +128,8 @@ public class Config {
         NOT_ALLOWED_USE(new String[]{"messages", "not-allowed-use"}, String.class),
         GIVE_SELF(new String[]{"messages", "give-self"}, String.class),
         UNKNOWN_COMMAND(new String[]{"messages", "unknown-command"}, String.class),
-        UNKNOWN_PICKAXE(new String[]{"messages", "unknown-pickaxe"}, String.class);
+        UNKNOWN_PICKAXE(new String[]{"messages", "unknown-pickaxe"}, String.class),
+        USE_GIVE_COMMAND(new String[]{"messages", "use-give-command"}, String.class);
 
         public final String[] path;
         public final Class<?> type;

@@ -1,9 +1,6 @@
 package project128.minecraft.mP128SpecialPickaxe.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +37,14 @@ public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
                     player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
                     return false;
                 }
+            } else if (strings[0].equals("give") && commandSender instanceof ConsoleCommandSender) {
+                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
+                return false;
+            }
+        } else if (strings.length == 1) {
+            if (strings[0].equals("give") && commandSender.hasPermission("specialpickaxe.give")) {
+                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
+                return true;
             }
         }
         commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_COMMAND));
