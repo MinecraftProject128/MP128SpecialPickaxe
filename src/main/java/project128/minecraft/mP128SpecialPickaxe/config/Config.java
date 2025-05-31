@@ -78,7 +78,7 @@ public class Config {
         return new SpecialPickaxe(name, displayName, description, freeUse, shape, material, enchantments);
     }
 
-    private @NotNull ConfigurationSection getSection(@NotNull String[] path) {
+    public @NotNull ConfigurationSection getSection(@NotNull String[] path) {
         ConfigurationSection section = plugin.getConfig();
         for (String s : path) {
             assert section != null;
