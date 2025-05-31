@@ -3,6 +3,7 @@ package project128.minecraft.mP128SpecialPickaxe.config;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,7 +60,11 @@ public class Config {
         for (String enchantmentName : enchantmentsSection.getKeys(false)) {
             Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName));
             int level = getField(new String[]{"pickaxes", name, "enchantments", enchantmentName}, Integer.class);
-            assert enchantment != null;
+
+            if (enchantment == null)
+                throw new UnacceptableEnchantment("Зачаровния с именем \"" +
+                        enchantmentName + "\" не существует!", plugin);
+
             enchantments.put(enchantment, Math.max(Math.min(level, enchantment.getMaxLevel()), 0));
         }
         return new SpecialPickaxe(name, displayName, description, freeUse, shape, material, enchantments);
