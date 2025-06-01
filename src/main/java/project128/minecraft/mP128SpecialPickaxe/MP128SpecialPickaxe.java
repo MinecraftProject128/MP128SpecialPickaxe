@@ -3,6 +3,7 @@ package project128.minecraft.mP128SpecialPickaxe;
 import org.bukkit.plugin.java.JavaPlugin;
 import project128.minecraft.mP128SpecialPickaxe.commands.MasterCommandExecutor;
 import project128.minecraft.mP128SpecialPickaxe.config.Config;
+import project128.minecraft.mP128SpecialPickaxe.listeners.PickaxeListener;
 
 public final class MP128SpecialPickaxe extends JavaPlugin {
 
@@ -15,6 +16,7 @@ public final class MP128SpecialPickaxe extends JavaPlugin {
 
         getCommand("specialpickaxe").setExecutor(new MasterCommandExecutor(this));
         getCommand("specialpickaxe").setTabCompleter(new MasterCommandExecutor(this));
+        getServer().getPluginManager().registerEvents(new PickaxeListener(this), this);
     }
 
 }
