@@ -65,9 +65,22 @@ public class PickaxeListener implements Listener {
         int sz = started.getBlockZ();
         List<Pair<Integer, Integer>> line = getLine(angle, data.getShape().length(), false);
         List<Pair<Integer, Integer>> perpendicular = getLine(angle + Math.PI / 2, data.getShape().width(), true);
+        new Location(w, sx, sy, sz)
+                .getBlock().setType(Material.GLASS);
         for (Pair<Integer, Integer> masterPoint : line) {
             new Location(w, sx - masterPoint.second(), sy, sz + masterPoint.first())
                     .getBlock().setType(Material.GLASS);
+            for (Pair<Integer, Integer> perpPoint : perpendicular) {
+                new Location(w, sx - masterPoint.second() - perpPoint.second(), sy,
+                        sz + masterPoint.first() + perpPoint.first())
+                        .getBlock().setType(Material.GLASS);
+                new Location(w, sx - masterPoint.second() - perpPoint.second(), sy,
+                        sz + masterPoint.first() + perpPoint.first() + 1)
+                        .getBlock().setType(Material.GLASS);
+                new Location(w, sx - masterPoint.second() - perpPoint.second(), sy,
+                        sz + masterPoint.first() + perpPoint.first() - 1)
+                        .getBlock().setType(Material.GLASS);
+            }
         }
     }
 
