@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface IMP128Command {
 
-    void run(@NotNull CommandSender commandSender, @NotNull String[] strings);
+    void run(@NotNull CommandSender commandSender, @NotNull String[] strings,
+             int typesOfArgumentsIndex);
 
-    boolean hasPermission(@NotNull CommandSender commandSender, @NotNull String[] strings, @NotNull String permissionPrefix);
+    boolean hasPermission(@NotNull CommandSender commandSender, @NotNull String[] strings,
+                          @NotNull String permissionPrefix, int typesOfArgumentsIndex);
 
     List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String[] strings);
 

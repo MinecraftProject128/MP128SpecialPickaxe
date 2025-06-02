@@ -25,8 +25,9 @@ public class CommandGive extends MP128Command {
     }
 
     @Override
-    public void run(@NotNull CommandSender commandSender, @NotNull String[] strings) {
-        if (getTypesOfArguments(strings) == this.typesOfArguments.get(0)) {
+    public void run(@NotNull CommandSender commandSender, @NotNull String[] strings,
+                    int typesOfArgumentsIndex) {
+        if (typesOfArgumentsIndex == 0) {
             SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[0]);
             if (commandSender instanceof Player player)
                 givePickaxe(player, pickaxe);
@@ -34,7 +35,8 @@ public class CommandGive extends MP128Command {
     }
 
     @Override
-    public boolean hasPermission(@NotNull CommandSender commandSender, @NotNull String[] strings, @NotNull String permissionPrefix) {
+    public boolean hasPermission(@NotNull CommandSender commandSender, @NotNull String[] strings,
+                                 @NotNull String permissionPrefix, int typesOfArgumentsIndex) {
         return commandSender.hasPermission(permissionPrefix + "give");
     }
 

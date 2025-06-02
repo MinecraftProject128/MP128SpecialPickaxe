@@ -29,8 +29,13 @@ public class MasterCommandExecutor implements CommandExecutor, TabCompleter {
         String cmd = args[0];
         args = Arrays.copyOfRange(args, 1, args.length);
         MP128Command executor = executors.get(cmd);
-        if (executor.hasPermission(sender, args, "specialpickaxe."))
-            executor.run(sender, args);
+        int typesOfArgumentsIndex = executor.getTypesOfArgumentsIndex(args);
+        if (typesOfArgumentsIndex == -1) {
+            sender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_COMMAND));
+            return true;
+        }
+        if (executor.hasPermission(sender, args, "specialpickaxe.", typesOfArgumentsIndex))
+            executor.run(sender, args, typesOfArgumentsIndex);
         else
             sender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
 

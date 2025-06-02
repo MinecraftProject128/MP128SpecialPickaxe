@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 abstract public class MP128Command implements IMP128Command {
@@ -16,24 +15,18 @@ abstract public class MP128Command implements IMP128Command {
         this.typesOfArguments = typesOfArguments;
     }
 
-    @Nullable
-    protected List<ValueType> getTypesOfArguments(@NotNull String[] args) {
-        plugin.getLogger().info("typesOfArguments: " + this.typesOfArguments.toString());
-        for (List<ValueType> types : this.typesOfArguments) {
-            plugin.getLogger().info("types.size() = " + types.size() + ", args.length: " + args.length);
-            plugin.getLogger().info("types.size() != args.length: " + (types.size() != args.length));
-            if (types.size() != args.length)
+    protected int getTypesOfArgumentsIndex(@NotNull String[] args) {
+        for (int i = 0; i < this.typesOfArguments.size(); i++) {
+            if (typesOfArguments.get(i).size() != args.length)
                 continue;
-            for (int i = 0; i < args.length; i++) {
-                plugin.getLogger().info(i + ") " + types.get(i) + ", " + args[i]);
-                plugin.getLogger().info("ValueType.canCast(types.get(i), args[i]): " + ValueType.canCast(types.get(i), args[i]));
-                if (!ValueType.canCast(types.get(i), args[i]))
+            for (int k = 0; k < args.length; k++) {
+                if (!ValueType.canCast(typesOfArguments.get(i).get(k), args[k]))
                     break;
                 if (i == args.length - 1)
-                    return types;
+                    return i;
             }
         }
-        return null;
+        return -1;
     }
 
     public enum ValueType {
