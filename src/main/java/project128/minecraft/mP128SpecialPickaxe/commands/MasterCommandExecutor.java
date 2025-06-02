@@ -1,87 +1,49 @@
 package project128.minecraft.mP128SpecialPickaxe.commands;
 
 import org.bukkit.command.*;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import project128.minecraft.mP128SpecialPickaxe.config.Config;
-import project128.minecraft.mP128SpecialPickaxe.config.SpecialPickaxe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class MasterCommandExecutor implements CommandExecutor, TabExecutor {
+public class MasterCommandExecutor implements CommandExecutor, TabCompleter {
     private final Plugin plugin;
+    private final Map<String, MP128Command> executors;
 
-    public MasterCommandExecutor(Plugin plugin) {
+    public MasterCommandExecutor(Plugin plugin, Map<String, MP128Command> executors) {
         this.plugin = plugin;
+        this.executors = executors;
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (strings.length == 2) {
-            if (strings[0].equals("give") && commandSender instanceof Player player) {
-                if (player.hasPermission("specialpickaxe.give")) {
-                    SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[1]);
-                    if (pickaxe == null) {
-                        player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_PICKAXE));
-                        return true;
-                    }
-                    GiveSpecialPickaxe.getInstance(plugin).givePickaxe(player, pickaxe);
-                    player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.GIVE_SELF,
-                            Map.of("{pickaxe-name}", strings[1])));
-                } else
-                    player.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
-                return true;
-            } else if (strings[0].equals("give") && commandSender instanceof ConsoleCommandSender) {
-                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
-                return true;
-            }
-        } else if (strings.length == 1) {
-            if (strings[0].equals("give")) {
-                if (commandSender.hasPermission("specialpickaxe.give"))
-                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
-                else
-                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
-                return true;
-            }
-            if (strings[0].equals("reload")) {
-                if (commandSender.hasPermission("specialpickaxe.reload")) {
-                    plugin.reloadConfig();
-                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.RELOAD));
-                } else
-                    commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
-                return true;
-            }
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 0) {
+            sender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_COMMAND));
+            return true;
         }
-        commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_COMMAND));
+        String cmd = args[0];
+        args = Arrays.copyOfRange(args, 1, args.length);
+        MP128Command executor = executors.get(cmd);
+        if (executor.hasPermission(sender, args, "specialpickaxe."))
+            executor.run(sender, args);
+        else
+            sender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.NOT_ALLOWED_COMMAND));
+
         return true;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (strings.length == 1)
-            return getFirstLevelCommandsTips(commandSender);
-        if (strings.length == 2 && strings[0].equals("give"))
-            return getSecondLevelCommandsTips(commandSender, strings);
-        return List.of();
-    }
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 1)
+            return new ArrayList<>(executors.keySet());
+        if (executors.get(args[0]) == null)
+            return List.of();
 
-    private List<String> getFirstLevelCommandsTips(CommandSender commandSender) {
-        List<String> tips = new ArrayList<>();
-        if (commandSender.hasPermission("specialpickaxe.give"))
-            tips.add("give");
-        if (commandSender.hasPermission("specialpickaxe.reload"))
-            tips.add("reload");
-        return tips;
-    }
-
-    private List<String> getSecondLevelCommandsTips(CommandSender commandSender, String[] strings) {
-        List<String> tips = new ArrayList<>();
-        if (strings[0].equals("give") && commandSender.hasPermission("specialpickaxe.give"))
-            tips.addAll(Config.getInstance(plugin).getSection(new String[]{"pickaxes"}).getKeys(false));
-        return tips;
+        return executors.get(args[0]).tabComplete(sender, args);
     }
 }

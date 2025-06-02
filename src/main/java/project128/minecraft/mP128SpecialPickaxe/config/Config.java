@@ -108,6 +108,10 @@ public class Config {
         return new SpecialPickaxe(name, displayName, description, freeUse, shape, material, enchantments);
     }
 
+    public List<String> getPickaxes() {
+        return getSection(new String[]{"pickaxes"}).getKeys(false).stream().toList();
+    }
+
     public @NotNull ConfigurationSection getSection(@NotNull String[] path) {
         ConfigurationSection section = plugin.getConfig();
         for (String s : path) {

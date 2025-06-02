@@ -1,6 +1,6 @@
 version: 1
 messages:
-  unknown-command: '&cВ плагине такой команды нет'
+  unknown-command: '&cВ плагине такой команды нет. Воспользуйтесь &o/help&r для получения списка всех команд'
   unknown-pickaxe: '&cКирки с таким названием не существует'
   reload: '&aПлагин успешно перезагружен'
   use-give-command: '&fНапишите &o/sp give &npickaxe-name&r чтобы получить кирку &o(только для игрока). &fИспользуйте &o/sp give &npickaxe-name&r &o&nplayer&r чтобы выдать кирку.'
