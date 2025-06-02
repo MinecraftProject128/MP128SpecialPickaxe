@@ -2,8 +2,10 @@ name: MP128SpecialPickaxe
 version: '1.0-SNAPSHOT'
 main: project128.minecraft.mP128SpecialPickaxe.MP128SpecialPickaxe
 api-version: '1.18'
-authors: [TheSpace]
+author: TheSpace
 description: Плагин для режима Underground
 commands:
   specialpickaxe:
-    aliases: sp
+    description: "Основная команда плагина"
+    usage: "/command <arg>"
+    aliases: [ sp ]

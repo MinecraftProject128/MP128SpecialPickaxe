@@ -4,32 +4,55 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import project128.minecraft.mP128SpecialPickaxe.config.Config;
 import project128.minecraft.mP128SpecialPickaxe.config.SpecialPickaxe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GiveSpecialPickaxe {
-    private static GiveSpecialPickaxe instance;
+public class CommandGive extends MP128Command {
 
-    private final Plugin plugin;
-
-    private GiveSpecialPickaxe(Plugin plugin) {
-        this.plugin = plugin;
+    public CommandGive(Plugin plugin, List<List<ValueType>> typesOfArguments) {
+        super(plugin, typesOfArguments);
     }
 
-    public static synchronized GiveSpecialPickaxe getInstance(Plugin plugin) {
-        if (instance == null)
-            instance = new GiveSpecialPickaxe(plugin);
-        return instance;
+    @Override
+    public void run(@NotNull CommandSender commandSender, @NotNull String[] strings,
+                    int typesOfArgumentsIndex) {
+        if (typesOfArgumentsIndex == 0) {
+            SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[0]);
+            if (pickaxe == null) {
+                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_PICKAXE));
+                return;
+            }
+            if (commandSender instanceof Player player)
+                givePickaxe(player, pickaxe);
+            else {
+                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
+            }
+        }
     }
 
+    @Override
+    public boolean hasPermission(@NotNull CommandSender commandSender, @NotNull String[] strings,
+                                 @NotNull String permissionPrefix, int typesOfArgumentsIndex) {
+        return commandSender.hasPermission(permissionPrefix + "give");
+    }
+
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String[] strings) {
+        if (strings.length == 2)
+            return Config.getInstance(plugin).getPickaxes();
+        return List.of();
+    }
 
     public void givePickaxe(Player player, SpecialPickaxe data) {
         player.getInventory().addItem(getPickaxe(data));
@@ -74,4 +97,5 @@ public class GiveSpecialPickaxe {
         for (Enchantment enchantment : data.getEnchantments().keySet())
             pickaxe.addEnchantment(enchantment, data.getEnchantments().get(enchantment));
     }
+
 }
