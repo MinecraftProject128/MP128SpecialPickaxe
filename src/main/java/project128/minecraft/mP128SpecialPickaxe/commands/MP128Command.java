@@ -22,7 +22,7 @@ abstract public class MP128Command implements IMP128Command {
             for (int k = 0; k < args.length; k++) {
                 if (!ValueType.canCast(typesOfArguments.get(i).get(k), args[k]))
                     break;
-                if (i == args.length - 1)
+                if (k == args.length - 1)
                     return i;
             }
         }
@@ -41,8 +41,9 @@ abstract public class MP128Command implements IMP128Command {
             } catch (NumberFormatException e) {
                 return false;
             }
-            if (type == PLAYER)
+            if (type == PLAYER) {
                 return Bukkit.getPlayer(value) != null;
+            }
             return true;
         }
     }
