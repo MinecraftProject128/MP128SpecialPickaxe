@@ -3,6 +3,7 @@ package project128.minecraft.mP128SpecialPickaxe.commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -28,23 +29,39 @@ public class CommandGive extends MP128Command {
     public void run(@NotNull CommandSender commandSender, @NotNull String[] strings,
                     int typesOfArgumentsIndex) {
         if (typesOfArgumentsIndex == 0) {
+            Player player = (Player) commandSender;
             SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[0]);
             if (pickaxe == null) {
                 commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_PICKAXE));
                 return;
             }
-            if (commandSender instanceof Player player)
-                givePickaxe(player, pickaxe);
-            else {
-                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
+            givePickaxe(player, pickaxe);
+        } else if (typesOfArgumentsIndex == 1) {
+            Player player = Bukkit.getPlayer(strings[1]);
+            SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[0]);
+            if (pickaxe == null) {
+                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_PICKAXE));
+                return;
             }
+            assert player != null;
+            givePickaxe(player, pickaxe);
         }
     }
 
     @Override
     public boolean hasPermission(@NotNull CommandSender commandSender, @NotNull String[] strings,
                                  @NotNull String permissionPrefix, int typesOfArgumentsIndex) {
-        return commandSender.hasPermission(permissionPrefix + "give");
+        if (typesOfArgumentsIndex == 0)
+            if (commandSender instanceof Player player)
+                return player.hasPermission(permissionPrefix + "give.self");
+            else
+                return false;
+        if (typesOfArgumentsIndex == 1)
+            if (commandSender instanceof Player player)
+                return player.hasPermission(permissionPrefix + "give.other");
+            else
+                return true;
+        return false;
     }
 
     @Override

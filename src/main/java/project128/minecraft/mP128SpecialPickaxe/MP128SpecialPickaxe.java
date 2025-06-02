@@ -30,7 +30,8 @@ public class MP128SpecialPickaxe extends JavaPlugin {
         Map<String, MP128Command> executors = new HashMap<>();
 
         executors.put("give", new CommandGive(this, List.of(
-                List.of(MP128Command.ValueType.STRING)
+                List.of(MP128Command.ValueType.STRING),
+                List.of(MP128Command.ValueType.STRING, MP128Command.ValueType.PLAYER)
         )));
 
         return executors;
