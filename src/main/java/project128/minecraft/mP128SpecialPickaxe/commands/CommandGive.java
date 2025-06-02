@@ -29,8 +29,15 @@ public class CommandGive extends MP128Command {
                     int typesOfArgumentsIndex) {
         if (typesOfArgumentsIndex == 0) {
             SpecialPickaxe pickaxe = Config.getInstance(plugin).getPickaxe(strings[0]);
+            if (pickaxe == null) {
+                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.UNKNOWN_PICKAXE));
+                return;
+            }
             if (commandSender instanceof Player player)
                 givePickaxe(player, pickaxe);
+            else {
+                commandSender.sendMessage(Config.getInstance(plugin).getMessage(Config.Field.USE_GIVE_COMMAND));
+            }
         }
     }
 
