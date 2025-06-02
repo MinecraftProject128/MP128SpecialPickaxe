@@ -37,7 +37,9 @@ public class PickaxeListener implements Listener {
                 return;
             SpecialPickaxe data = Config.getInstance(plugin)
                     .getPickaxe(name);
-            removeBlocks(event.getBlock().getLocation(), data);
+            double angle = Math.PI * player.getLocation().getYaw() / 180;
+
+            removeBlocks(event.getBlock().getLocation(), angle, data);
         }
     }
 
@@ -56,15 +58,15 @@ public class PickaxeListener implements Listener {
         return points;
     }
 
-    private void removeBlocks(Location started, SpecialPickaxe data) {
+    private void removeBlocks(Location started, double angle, SpecialPickaxe data) {
         World w = started.getWorld();
-        Integer sx = started.getBlockX();
-        Integer sy = started.getBlockY();
-        Integer sz = started.getBlockZ();
-        List<Pair<Integer, Integer>> line = getLine(0, data.getShape().length(), false);
-        List<Pair<Integer, Integer>> perpendicular = getLine(Math.PI / 2, data.getShape().width(), true);
+        int sx = started.getBlockX();
+        int sy = started.getBlockY();
+        int sz = started.getBlockZ();
+        List<Pair<Integer, Integer>> line = getLine(angle, data.getShape().length(), false);
+        List<Pair<Integer, Integer>> perpendicular = getLine(angle + Math.PI / 2, data.getShape().width(), true);
         for (Pair<Integer, Integer> masterPoint : line) {
-            new Location(w, sx + masterPoint.first(), sy, sz + masterPoint.second())
+            new Location(w, sx - masterPoint.second(), sy, sz + masterPoint.first())
                     .getBlock().setType(Material.GLASS);
         }
     }
