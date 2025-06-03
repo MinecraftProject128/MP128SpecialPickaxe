@@ -50,8 +50,8 @@ public class PickaxeListener implements Listener {
             l = -length;
         while (l <= length) {
             points.add(Pair.of(
-                    ((Long) (Math.round(Math.cos(angle)) * l)).intValue(),
-                    ((Long) (Math.round(Math.sin(angle)) * l)).intValue()
+                    ((Long) (Math.round(Math.cos(angle) * l))).intValue(),
+                    ((Long) (Math.round(Math.sin(angle) * l))).intValue()
             ));
             l += 1;
         }
